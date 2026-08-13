@@ -3,19 +3,21 @@ export interface Movie {
   name: string;
   title: string;
   description: string;
-  poster: string;
+  duration: number;
+  poster: string | null;
 }
 export interface createMovie {
   name: string;
   title: string;
   description: string;
-  poster: string;
+  duration: number;
+  poster: string | null;
 }
 
 export interface updateMovie {
-  id?: string;
   name?: string;
   title?: string;
   description?: string;
-  poster?: string;
+  duration: number;
+  poster: string | null;
 }

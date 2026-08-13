@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.ts";
+import prisma from "../config/prisma";
 import type {
   CreateSection,
   Section,
@@ -19,7 +19,7 @@ export class SectionRepository {
   }
 
   async findByHallId(hallId: string): Promise<Section[] | null> {
-    return prisma.section.findUnique({
+    return prisma.section.findMany({
       where: {
         hallId,
       },

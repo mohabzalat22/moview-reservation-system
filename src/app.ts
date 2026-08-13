@@ -1,7 +1,10 @@
-import express, { type Express, type Request, type Response } from "express";
-import { userRouter } from "./routes/index.routes.ts";
+import express, { type Express } from "express";
+import { AuthRouter, userRouter } from "./routes/index.routes";
 const app: Express = express();
 
+app.use(express.json());
+
+app.use("/api", AuthRouter);
 app.use("/api", userRouter);
 
-app.listen(3000);
+export default app;

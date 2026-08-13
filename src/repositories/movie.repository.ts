@@ -1,9 +1,9 @@
 import type { createMovie, Movie, updateMovie } from "../dto/movie.dto.ts";
-import prisma from "../config/prisma.ts";
+import prisma from "../config/prisma";
 
 export class MovieRepository {
   async findAll(): Promise<Movie[] | null> {
-    return prisma.movie.findAll();
+    return prisma.movie.findMany();
   }
 
   async findById(id: string): Promise<Movie | null> {
@@ -19,7 +19,7 @@ export class MovieRepository {
   }
 
   async update(id: string, data: updateMovie): Promise<Movie> {
-    return prisma.movie.update({ where: id }, data);
+    return prisma.movie.update({ where: { id }, data });
   }
 
   async deleteById(id: string): Promise<Movie> {

@@ -1,9 +1,5 @@
-import prisma from "../config/prisma.ts";
-import {
-  type CreateUser,
-  type UpdateUser,
-  type User,
-} from "../dto/user.dto.ts";
+import prisma from "../config/prisma";
+import { type CreateUser, type UpdateUser, type User } from "../dto/user.dto";
 
 export class UserRepository {
   async findAll(): Promise<User[]> {
@@ -22,12 +18,8 @@ export class UserRepository {
     });
   }
 
-  async findByEmail(Email: string): Promise<User | null> {
-    return prisma.user.findUnique({
-      where: {
-        Email,
-      },
-    });
+  async findByEmail(email: string): Promise<User | null> {
+    return prisma.user.findUnique({ where: { email } });
   }
 
   async create(data: CreateUser): Promise<User> {

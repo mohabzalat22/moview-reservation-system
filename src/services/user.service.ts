@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 
-import type { CreateUser, UpdateUser } from "../dto/user.dto.ts";
+import type { CreateUser, UpdateUser } from "../dto/user.dto";
 
-import { UserRepository } from "../repositories/user.repository.ts";
+import { UserRepository } from "../repositories/user.repository";
 
 export class UserService {
   private userRepository: UserRepository;

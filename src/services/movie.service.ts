@@ -1,5 +1,5 @@
-import type { createMovie, updateMovie } from "../dto/movie.dto.ts";
-import { MovieRepository } from "../repositories/movie.repository.ts";
+import type { createMovie, updateMovie } from "../dto/movie.dto";
+import { MovieRepository } from "../repositories/movie.repository";
 export class MovieService {
   private movieRepository;
 

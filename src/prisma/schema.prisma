@@ -12,6 +12,7 @@ model User {
   role         Role          @default(USER)
   name         String
   email        String        @unique
+  password     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
@@ -26,6 +27,7 @@ enum Role {
 model Movie {
   id          String     @id @default(uuid()) @db.Uuid
   title       String
+  name        String     @unique
   description String
   poster      String?
   duration    Int        // duration in minutes

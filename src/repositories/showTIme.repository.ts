@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.ts";
+import prisma from "../config/prisma";
 import type {
   CreateShowTime,
   ShowTime,
@@ -23,7 +23,7 @@ export class ShowTimeRepository {
   }
 
   async create(data: CreateShowTime): Promise<ShowTime> {
-    return prisma.showTime.create(data);
+    return prisma.showTime.create({ data });
   }
 
   async update(id: string, data: UpdateShowTime): Promise<ShowTime> {

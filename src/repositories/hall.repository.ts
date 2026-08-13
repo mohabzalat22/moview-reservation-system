@@ -1,5 +1,5 @@
-import prisma from "../config/prisma.ts";
-import type { CreateHall, Hall, UpdateHall } from "../dto/hall.dto.ts";
+import prisma from "../config/prisma";
+import type { CreateHall, Hall, UpdateHall } from "../dto/hall.dto";
 
 export class HallRepository {
   async findAll(): Promise<Hall[] | null> {

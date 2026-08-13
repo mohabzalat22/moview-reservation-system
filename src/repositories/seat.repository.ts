@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.ts";
+import prisma from "../config/prisma";
 import type { CreateSeat, Seat, UpdateSeat } from "../dto/seat.dto.ts";
 
 export class SeatRepository {
@@ -10,7 +10,7 @@ export class SeatRepository {
   }
 
   async findBySectionId(sectionId: string): Promise<Seat[] | null> {
-    return prisma.seat.findUnique({ where: { sectionId } });
+    return prisma.seat.findMany({ where: { sectionId } });
   }
 
   async findById(id: string): Promise<Seat | null> {

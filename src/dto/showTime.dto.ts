@@ -1,34 +1,35 @@
+import { Decimal } from "@prisma/client/runtime/client";
 export interface ShowTime {
-  id: String;
-  basePrice: number;
-  baseCurrency?: String;
+  id: string;
+  basePrice: Decimal;
+  baseCurrency?: string;
   showTimeStart: Date;
   showTimeEnd: Date;
   createdAt: Date;
   updatedAt: Date;
-  movieId: String;
-  hallId: String;
+  movieId: string;
+  hallId: string;
 }
 
 export interface CreateShowTime {
-  basePrice: number;
-  baseCurrency?: String;
+  basePrice: Decimal;
+  baseCurrency?: string;
   showTimeStart: Date;
   showTimeEnd: Date;
   createdAt: Date;
   updatedAt: Date;
-  movieId: String;
-  hallId: String;
+  movieId: string;
+  hallId: string;
 }
 
 export interface UpdateShowTime {
-  id?: String;
-  basePrice?: number;
-  baseCurrency?: String;
+  id?: string;
+  basePrice?: Decimal;
+  baseCurrency?: string;
   showTimeStart?: Date;
   showTimeEnd?: Date;
   createdAt?: Date;
   updatedAt?: Date;
-  movieId?: String;
-  hallId?: String;
+  movieId?: string;
+  hallId?: string;
 }

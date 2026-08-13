@@ -1,4 +1,4 @@
-import type { createMovie, Movie, updateMovie } from "../dto/movie.dto.ts";
+import type { CreateMovie, Movie, UpdateMovie } from "../dto/movie.dto.ts";
 import prisma from "../config/prisma";
 
 export class MovieRepository {
@@ -14,11 +14,11 @@ export class MovieRepository {
     return prisma.movie.findUnique({ where: { name } });
   }
 
-  async create(data: createMovie): Promise<Movie> {
+  async create(data: CreateMovie): Promise<Movie> {
     return prisma.movie.create({ data });
   }
 
-  async update(id: string, data: updateMovie): Promise<Movie> {
+  async update(id: string, data: UpdateMovie): Promise<Movie> {
     return prisma.movie.update({ where: { id }, data });
   }
 

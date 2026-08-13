@@ -1,4 +1,4 @@
-import type { createMovie, updateMovie } from "../dto/movie.dto";
+import type { CreateMovie, UpdateMovie } from "../dto/movie.dto";
 import { MovieRepository } from "../repositories/movie.repository";
 export class MovieService {
   private movieRepository;
@@ -15,7 +15,7 @@ export class MovieService {
     return this.movieRepository.findById(id);
   }
 
-  async createMovie(data: createMovie) {
+  async createMovie(data: CreateMovie) {
     const movieExists = await this.movieRepository.findByName(data.name);
     if (movieExists) {
       throw new Error("movie already exists");
@@ -23,7 +23,7 @@ export class MovieService {
     return this.movieRepository.create(data);
   }
 
-  async updateMovie(id: string, data: updateMovie) {
+  async updateMovie(id: string, data: UpdateMovie) {
     const movieExists = await this.movieRepository.findById(id);
     if (!movieExists) {
       throw new Error("movie doesnot exists");

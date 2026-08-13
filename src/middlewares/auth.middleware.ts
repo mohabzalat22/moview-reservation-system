@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../utils/jwt";
+import { verifyAccessToken } from "../utils/jwt";
 import { ApiResponse } from "../utils/api-response";
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
@@ -7,20 +7,21 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return apiResponse.unauthorized(res, "authentication Required");
+    return apiResponse.unauthorized(res, "Authentication Required");
   }
 
   const [scheme, token] = authHeader.split(" ");
 
   if (scheme !== "Bearer" || !token) {
-    return;
+    return apiResponse.unauthorized(res, "Invalid authorization header");
   }
 
   try {
-    const payload = verifyToken(token);
+    const payload = verifyAccessToken(token);
 
     req.user = {
       id: payload.userId,
+      role: payload.role,
     };
 
     next();

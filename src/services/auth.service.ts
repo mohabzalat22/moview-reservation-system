@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "../repositories/user.repository";
-import { generateToken } from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 import { DBUser } from "../dto/user.dto";
-
+import { verifyRefreshToken } from "../utils/jwt";
 export class AuthService {
   private userRepository: UserRepository;
 
@@ -25,14 +25,18 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const token = generateToken(user.id);
+    const accessToken = generateAccessToken(user.id, user.role);
+
+    const refreshToken = generateRefreshToken(user.id);
 
     return {
       user: {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
     };
   }
 
@@ -49,14 +53,34 @@ export class AuthService {
       throw new Error("Invalid email or password");
     }
 
-    const token = generateToken(user.id);
+    const accessToken = generateAccessToken(user.id, user.role);
+
+    const refreshToken = generateRefreshToken(user.id);
 
     return {
       user: {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async refresh(refreshToken: string) {
+    const payload = verifyRefreshToken(refreshToken);
+
+    const user = await this.userRepository.findById(payload.userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const accessToken = generateAccessToken(user.id, user.role);
+
+    return {
+      accessToken,
     };
   }
 }

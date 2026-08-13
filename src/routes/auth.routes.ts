@@ -8,5 +8,6 @@ const authController = new AuthController();
 router.post("/auth/register", authController.register.bind(authController));
 router.post("/auth/login", authController.login.bind(authController));
 router.get("/auth/me", authenticate, authController.me.bind(authController));
+router.post("/auth/refresh", authController.refresh.bind(authController));
 
 export default router;

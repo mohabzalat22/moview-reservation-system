@@ -6,7 +6,7 @@ export interface Movie {
   duration: number;
   poster: string | null;
 }
-export interface createMovie {
+export interface CreateMovie {
   name: string;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ export interface createMovie {
   poster: string | null;
 }
 
-export interface updateMovie {
+export interface UpdateMovie {
   name?: string;
   title?: string;
   description?: string;

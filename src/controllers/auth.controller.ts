@@ -56,4 +56,27 @@ export class AuthController {
       userId: req?.user?.id,
     });
   }
+
+  async refresh(req: Request, res: Response) {
+    try {
+      const { refreshToken } = req.body;
+
+      if (!refreshToken) {
+        return this.apiResponse.unauthorized(res, "Refresh token is required");
+      }
+
+      const result = await this.authService.refresh(refreshToken);
+
+      return this.apiResponse.success(
+        res,
+        result,
+        "Access token refreshed successfully",
+      );
+    } catch (error) {
+      return this.apiResponse.unauthorized(
+        res,
+        "Invalid or expired refresh token",
+      );
+    }
+  }
 }

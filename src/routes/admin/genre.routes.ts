@@ -13,7 +13,7 @@ router.get(
   asyncWrapper(genreController.index.bind(genreController)),
 );
 
-router.post(
+router.get(
   "/genres/:id",
   authenticate,
   asyncWrapper(genreController.show.bind(genreController)),

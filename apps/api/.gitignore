@@ -3,4 +3,3 @@ dist
 .turbo
 .env
 .env.local
-.env.*.local

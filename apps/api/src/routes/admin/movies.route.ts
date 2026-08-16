@@ -8,14 +8,11 @@ const movieController = new MovieController();
 
 router.get(
   "/movies",
-  authenticate,
-  isAdmin,
   asyncWrapper(movieController.index.bind(movieController)),
 );
 
 router.get(
   "/movies/:id",
-  authenticate,
   asyncWrapper(movieController.show.bind(movieController)),
 );
 

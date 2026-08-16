@@ -9,14 +9,11 @@ const hallController = new HallController();
 
 router.get(
   "/halls",
-  authenticate,
-  isAdmin,
   asyncWrapper(hallController.index.bind(hallController)),
 );
 
 router.get(
   "/halls/:id",
-  authenticate,
   asyncWrapper(hallController.show.bind(hallController)),
 );
 

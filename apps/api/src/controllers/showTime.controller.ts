@@ -13,7 +13,9 @@ export class ShowTimeController {
   }
 
   async index(req: Request, res: Response) {
-    const showTimes = await this.showTimeService.getShowTimes();
+    const date = req.query.date as string | undefined;
+    const upcomingOnly = req.query.upcomingOnly === 'true';
+    const showTimes = await this.showTimeService.getShowTimes(date, upcomingOnly);
     return this.apiResponse.success(res, showTimes);
   }
 

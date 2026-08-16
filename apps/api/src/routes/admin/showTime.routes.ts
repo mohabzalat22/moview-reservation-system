@@ -9,14 +9,11 @@ const showTimeController = new ShowTimeController();
 
 router.get(
   "/showtimes",
-  authenticate,
-  isAdmin,
   asyncWrapper(showTimeController.index.bind(showTimeController)),
 );
 
 router.get(
   "/showtimes/:id",
-  authenticate,
   asyncWrapper(showTimeController.show.bind(showTimeController)),
 );
 

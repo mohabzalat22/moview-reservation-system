@@ -11,7 +11,7 @@ export async function request<T>(
     ...(options.headers as Record<string, string> | undefined),
   };
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  const res = await fetch(`${API_BASE}${path}`, { ...options, headers});
   const json = await res.json();
 
   if (!res.ok) {

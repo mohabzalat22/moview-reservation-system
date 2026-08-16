@@ -9,14 +9,11 @@ const sectionController = new SectionController();
 
 router.get(
   "/sections",
-  authenticate,
-  isAdmin,
   asyncWrapper(sectionController.index.bind(sectionController)),
 );
 
 router.get(
   "/sections/:id",
-  authenticate,
   asyncWrapper(sectionController.show.bind(sectionController)),
 );
 

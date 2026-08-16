@@ -9,14 +9,11 @@ const seatController = new SeatController();
 
 router.get(
   "/seats",
-  authenticate,
-  isAdmin,
   asyncWrapper(seatController.index.bind(seatController)),
 );
 
 router.get(
   "/seats/:id",
-  authenticate,
   asyncWrapper(seatController.show.bind(seatController)),
 );
 

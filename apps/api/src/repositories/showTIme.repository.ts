@@ -6,10 +6,29 @@ import type {
 } from "../dto/showTime.dto.ts";
 
 export class ShowTimeRepository {
-  async findAll(): Promise<ShowTime[] | null> {
+  async findAll(date?: string, upcomingOnly: boolean = false): Promise<any[] | null> {
+    const whereClause: any = {};
+    const now = new Date();
+    if (date) {
+      const startOfDay = new Date(`${date}T00:00:00.000Z`);
+      const endOfDay   = new Date(`${date}T23:59:59.999Z`);
+      whereClause.showTimeStart = {
+        gte: (upcomingOnly && startOfDay < now) ? now : startOfDay,
+        lte: endOfDay,
+      };
+    } else if (upcomingOnly) {
+      whereClause.showTimeStart = {
+        gte: now,
+      };
+    }
     return prisma.showTime.findMany({
+      where: whereClause,
+      include: {
+        movie: true,
+        hall: true,
+      },
       orderBy: {
-        createdAt: "desc",
+        showTimeStart: "asc",
       },
     });
   }

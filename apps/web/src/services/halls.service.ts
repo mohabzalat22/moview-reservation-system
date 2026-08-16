@@ -2,8 +2,8 @@ import { request, Envelope } from "./core";
 import type { Hall, CreateHall } from "@/dto/hall.dto";
 
 
-export async function getHalls(token: string) {
-  const env = await request<Envelope<Hall[]>>("/halls", token);
+export async function getHalls(token?: string | null) {
+  const env = await request<Envelope<Hall[]>>("/halls", token ?? null);
   return env.data;
 }
 

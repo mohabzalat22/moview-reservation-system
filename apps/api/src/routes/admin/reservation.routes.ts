@@ -10,7 +10,6 @@ const reservationController = new ReservationController();
 router.get(
   "/reservations",
   authenticate,
-  isAdmin,
   asyncWrapper(reservationController.index.bind(reservationController)),
 );
 

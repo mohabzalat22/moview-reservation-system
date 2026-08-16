@@ -2,8 +2,8 @@ import { request, Envelope } from "./core";
 import type { Movie, CreateMovie } from "@/dto/movie.dto";
 
 
-export async function getMovies(token: string) {
-  const env = await request<Envelope<Movie[]>>("/movies", token);
+export async function getMovies(token?: string | null) {
+  const env = await request<Envelope<Movie[]>>("/movies", token ?? null);
   return env.data;
 }
 

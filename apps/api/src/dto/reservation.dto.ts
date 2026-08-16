@@ -9,8 +9,9 @@ export interface Reservation {
 export interface CreateReservation {
   userId: string;
   showTimeId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  seats?: { seatId: string; price: number }[];
 }
 
 export interface UpdateReservation {

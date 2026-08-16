@@ -2,8 +2,8 @@ import { request, Envelope } from "./core";
 import type { Section, CreateSection } from "@/dto/section.dto";
 
 
-export async function getSections(token: string) {
-  const env = await request<Envelope<Section[]>>("/sections", token);
+export async function getSections(token?: string | null) {
+  const env = await request<Envelope<Section[]>>("/sections", token ?? null);
   return env.data;
 }
 

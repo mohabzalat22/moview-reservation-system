@@ -9,6 +9,8 @@ export interface ShowTime {
   updatedAt: Date;
   movieId: string;
   hallId: string;
+  movie?: any;
+  hall?: any;
 }
 
 export interface CreateShowTime {

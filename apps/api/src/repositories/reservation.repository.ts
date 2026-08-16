@@ -6,8 +6,8 @@ import type {
 } from "../dto/reservation.dto.ts";
 
 export class ReservationRepository {
-  async findAll(): Promise<Reservation[] | null> {
-    return prisma.reservation.findMany();
+  async findAll(): Promise<any> {
+    return prisma.reservation.findMany({ include: { seats: true } });
   }
 
   async findAllByUserId(userId: string): Promise<Reservation[] | null> {
@@ -22,8 +22,14 @@ export class ReservationRepository {
     return prisma.reservation.findUnique({ where: { id } });
   }
 
-  async create(data: CreateReservation): Promise<Reservation> {
-    return prisma.reservation.create({ data });
+  async create(data: any): Promise<Reservation> {
+    const { seats, ...rest } = data;
+    return prisma.reservation.create({
+      data: {
+        ...rest,
+        ...(seats && { seats: { create: seats } })
+      }
+    });
   }
 
   async update(id: string, data: UpdateReservation): Promise<Reservation> {

@@ -2,8 +2,8 @@ import { request, Envelope } from "./core";
 import type { Seat, CreateSeat } from "@/dto/seat.dto";
 
 
-export async function getSeats(token: string) {
-  const env = await request<Envelope<Seat[]>>("/seats", token);
+export async function getSeats(token?: string | null) {
+  const env = await request<Envelope<Seat[]>>("/seats", token ?? null);
   return env.data;
 }
 

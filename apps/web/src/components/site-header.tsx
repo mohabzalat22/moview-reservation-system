@@ -25,6 +25,9 @@ export function SiteHeader() {
               Admin
             </Link>
           )}
+          <Link href="/movies" className="hover:text-red-600 transition-colors">
+            Movies
+          </Link>
           {!isLoading && user ? (
             <>
               <Link

@@ -8,8 +8,8 @@ export class ShowTimeService {
     this.showTimeRepository = new ShowTimeRepository();
   }
 
-  async getShowTimes() {
-    return this.showTimeRepository.findAll();
+  async getShowTimes(date?: string, upcomingOnly?: boolean) {
+    return this.showTimeRepository.findAll(date, upcomingOnly);
   }
 
   async getShowTimeById(id: string) {

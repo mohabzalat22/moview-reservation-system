@@ -2,8 +2,13 @@ import { request, Envelope } from "./core";
 import type { ShowTime, CreateShowTime } from "@/dto/showTime.dto";
 
 
-export async function getShowTimes(token: string) {
-  const env = await request<Envelope<ShowTime[]>>("/showtimes", token);
+export async function getShowTimes(token?: string | null, date?: string, upcomingOnly: boolean = false) {
+  const queryParams = new URLSearchParams();
+  if (date) queryParams.append("date", date);
+  if (upcomingOnly) queryParams.append("upcomingOnly", "true");
+  
+  const queryStr = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  const env = await request<Envelope<ShowTime[]>>(`/showtimes${queryStr}`, token ?? null);
   return env.data;
 }
 

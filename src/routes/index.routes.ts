@@ -2,3 +2,8 @@ export { default as userRouter } from "./user.routes";
 export { default as AuthRouter } from "./auth.routes";
 export { default as GenreRouter } from "./admin/genre.routes";
 export { default as MoviesRouter } from "./admin/movies.route";
+export { default as ShowTimeRouter } from "./admin/showTime.routes";
+export { default as HallRouter } from "./admin/hall.routes";
+export { default as SectionRouter } from "./admin/section.routes";
+export { default as SeatRouter } from "./admin/seat.routes";
+export { default as ReservationRouter } from "./admin/reservation.routes";

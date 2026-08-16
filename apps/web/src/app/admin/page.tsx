@@ -1,99 +1,78 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+"use client";
+
+import { useState } from "react";
+import { useAuth } from "@/lib/auth-context";
+import MoviesTab from "./tabs/MoviesTab";
+import GenresTab from "./tabs/GenresTab";
+import HallsTab from "./tabs/HallsTab";
+import SectionsTab from "./tabs/SectionsTab";
+import SeatsTab from "./tabs/SeatsTab";
+import ShowTimesTab from "./tabs/ShowTimesTab";
+import ReservationsTab from "./tabs/ReservationsTab";
+
+const TABS = [
+  { id: "movies", label: " Movies" },
+  { id: "genres", label: "Genres" },
+  { id: "halls", label: "Halls" },
+  { id: "sections", label: "Sections" },
+  { id: "seats", label: "Seats" },
+  { id: "showtimes", label: "Showtimes" },
+  { id: "reservations", label: "Reservations" },
+] as const;
+
+type TabId = (typeof TABS)[number]["id"];
 
 export default function AdminPage() {
-  return (
-    <div className="container max-w-6xl py-10 mx-auto space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Button>Add New Movie</Button>
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<TabId>("movies");
+
+  if (user?.role !== "ADMIN") {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-3">
+          <h2 className="text-2xl font-bold text-gray-800">Access Denied</h2>
+          <p className="text-gray-500">You need admin privileges to view this page.</p>
+        </div>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Total Reservations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1,248</div>
-            <p className="text-xs text-green-500">+12% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Active Movies</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-gray-500">Currently showing in theaters</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Total Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-green-500">+8% from last month</p>
-          </CardContent>
-        </Card>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white border-b px-6 py-5 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+        <p className="text-sm text-gray-500 mt-0.5">Manage your cinema system resources</p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Reservations</CardTitle>
-          <CardDescription>A list of the latest movie ticket bookings.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Customer</TableHead>
-                <TableHead>Movie</TableHead>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead className="text-right">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Liam Johnson</TableCell>
-                <TableCell>Dune: Part Two</TableCell>
-                <TableCell>Aug 16, 2026 - 7:30 PM</TableCell>
-                <TableCell>$32.00</TableCell>
-                <TableCell className="text-right">
-                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
-                    Confirmed
-                  </span>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Olivia Smith</TableCell>
-                <TableCell>Kung Fu Panda 4</TableCell>
-                <TableCell>Aug 16, 2026 - 4:15 PM</TableCell>
-                <TableCell>$45.00</TableCell>
-                <TableCell className="text-right">
-                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
-                    Confirmed
-                  </span>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Noah Williams</TableCell>
-                <TableCell>Godzilla x Kong</TableCell>
-                <TableCell>Aug 17, 2026 - 9:00 PM</TableCell>
-                <TableCell>$18.00</TableCell>
-                <TableCell className="text-right">
-                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800">
-                    Pending
-                  </span>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {/* Tab Bar */}
+      <div className="bg-white border-b px-6 overflow-x-auto">
+        <div className="flex gap-1 min-w-max">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === tab.id
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="p-6">
+        {activeTab === "movies" && <MoviesTab />}
+        {activeTab === "genres" && <GenresTab />}
+        {activeTab === "halls" && <HallsTab />}
+        {activeTab === "sections" && <SectionsTab />}
+        {activeTab === "seats" && <SeatsTab />}
+        {activeTab === "showtimes" && <ShowTimesTab />}
+        {activeTab === "reservations" && <ReservationsTab />}
+      </div>
     </div>
-  )
+  );
 }

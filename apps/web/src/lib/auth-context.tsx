@@ -28,7 +28,6 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const ACCESS_TOKEN_KEY = "mrs_access_token";
-const REFRESH_TOKEN_KEY = "mrs_refresh_token";
 const USER_KEY = "mrs_user";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -50,11 +49,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
+
+    const handleRefresh = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      setAccessToken(customEvent.detail);
+    };
+
+    const handleLogout = () => {
+      logout();
+    };
+
+    window.addEventListener("mrs_token_refreshed", handleRefresh);
+    window.addEventListener("mrs_logout", handleLogout);
+
+    return () => {
+      window.removeEventListener("mrs_token_refreshed", handleRefresh);
+      window.removeEventListener("mrs_logout", handleLogout);
+    };
   }, []);
 
   const persist = useCallback((result: AuthResult) => {
     localStorage.setItem(ACCESS_TOKEN_KEY, result.accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, result.refreshToken);
     localStorage.setItem(USER_KEY, JSON.stringify(result.user));
     setAccessToken(result.accessToken);
     setUser(result.user);
@@ -76,9 +91,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [persist]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    try {
+      // Attempt to tell the backend to clear the refresh token cookie
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      // Ignore network errors on logout
+    }
+
     localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     setAccessToken(null);
     setUser(null);

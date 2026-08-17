@@ -3,7 +3,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 export interface AuthResult {
   user: { id: string; email: string; role: string; name?: string };
   accessToken: string;
-  refreshToken: string;
 }
 
 async function request<T>(
@@ -15,13 +14,13 @@ async function request<T>(
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
+    credentials: "include",
     ...options,
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    // Backend usually returns { message: "..." } or { error: "..." }
     throw new Error(data.message || data.error || "Request failed");
   }
 
@@ -65,13 +64,19 @@ export async function getMeApi(accessToken: string) {
   return envelope.data;
 }
 
-export async function refreshTokenApi(refreshToken: string) {
+export async function refreshTokenApi() {
   const envelope = await request<ApiEnvelope<{ accessToken: string }>>(
     "/auth/refresh",
     {
       method: "POST",
-      body: JSON.stringify({ refreshToken }),
     }
   );
   return envelope.data;
+}
+
+export async function logoutApi() {
+  const envelope = await request<ApiEnvelope<null>>("/auth/logout", {
+    method: "POST",
+  });
+  return envelope;
 }

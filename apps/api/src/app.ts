@@ -1,5 +1,6 @@
 import express, { type Express } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import {
   AuthRouter,
   GenreRouter,
@@ -13,6 +14,7 @@ import {
 
 const app: Express = express();
 
+app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",

@@ -9,6 +9,7 @@ import SectionsTab from "./tabs/SectionsTab";
 import SeatsTab from "./tabs/SeatsTab";
 import ShowTimesTab from "./tabs/ShowTimesTab";
 import ReservationsTab from "./tabs/ReservationsTab";
+import ShowtimeAnalyticsTab from "./tabs/ShowtimeAnalyticsTab";
 
 const TABS = [
   { id: "movies", label: " Movies" },
@@ -17,6 +18,7 @@ const TABS = [
   { id: "sections", label: "Sections" },
   { id: "seats", label: "Seats" },
   { id: "showtimes", label: "Showtimes" },
+  { id: "analytics", label: "Analytics" },
   { id: "reservations", label: "Reservations" },
 ] as const;
 
@@ -71,6 +73,7 @@ export default function AdminPage() {
         {activeTab === "sections" && <SectionsTab />}
         {activeTab === "seats" && <SeatsTab />}
         {activeTab === "showtimes" && <ShowTimesTab />}
+        {activeTab === "analytics" && <ShowtimeAnalyticsTab />}
         {activeTab === "reservations" && <ReservationsTab />}
       </div>
     </div>

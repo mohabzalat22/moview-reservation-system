@@ -38,4 +38,11 @@ router.delete(
   asyncWrapper(showTimeController.delete.bind(showTimeController)),
 );
 
+router.get(
+  "/showtimes/:id/stats",
+  authenticate,
+  isAdmin,
+  asyncWrapper(showTimeController.stats.bind(showTimeController)),
+);
+
 export default router;

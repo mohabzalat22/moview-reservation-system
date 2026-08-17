@@ -43,4 +43,10 @@ export class ShowTimeController {
     const showTime = await this.showTimeService.deleteShowTimeById(id);
     return this.apiResponse.success(res, showTime);
   }
+
+  async stats(req: Request, res: Response) {
+    const id = req.params.id as string;
+    const data = await this.showTimeService.getShowTimeStats(id);
+    return this.apiResponse.success(res, data);
+  }
 }

@@ -35,4 +35,10 @@ export class ShowTimeService {
     }
     return this.showTimeRepository.deleteById(id);
   }
+
+  async getShowTimeStats(id: string) {
+    const stats = await this.showTimeRepository.findStats(id);
+    if (!stats) throw new Error("ShowTime does not exist");
+    return stats;
+  }
 }

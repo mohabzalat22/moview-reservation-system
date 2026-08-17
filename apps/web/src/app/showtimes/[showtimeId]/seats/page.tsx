@@ -142,21 +142,21 @@ export default function SeatSelectionPage(props: { params: Promise<{ showtimeId:
   };
 
   if (isLoading || loadingData) {
-    return <div className="container mx-auto px-4 py-8">Loading seat map...</div>;
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-muted-foreground">Loading seat map...</div>;
   }
 
   if (!showtime || !hall) {
-    return <div className="container mx-auto px-4 py-8 text-red-600">Showtime not found.</div>;
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-primary">Showtime not found.</div>;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-64px)]">
-      <h1 className="text-3xl font-bold mb-6">Select Your Seats</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-64px)]">
+      <h1 className="text-3xl font-bold mb-6 text-foreground">Select Your Seats</h1>
       
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-center">{hall.name} - Screen</h2>
-        <div className="w-3/4 mx-auto h-12 bg-gradient-to-b from-gray-300 to-transparent rounded-t-[50%] mb-12 relative flex items-center justify-center border-t-4 border-gray-400">
-          <span className="text-gray-500 text-sm font-medium tracking-[0.3em] absolute top-2">SCREEN</span>
+      <div className="bg-card p-6 rounded-xl border border-border mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-center text-foreground">{hall.name} - Screen</h2>
+        <div className="w-3/4 mx-auto h-12 bg-gradient-to-b from-white/10 to-transparent rounded-t-[50%] mb-12 relative flex items-center justify-center border-t-4 border-white/20">
+          <span className="text-muted-foreground text-sm font-medium tracking-[0.3em] absolute top-2">SCREEN</span>
         </div>
         
         <div className="max-w-4xl mx-auto flex flex-col gap-8">
@@ -166,7 +166,7 @@ export default function SeatSelectionPage(props: { params: Promise<{ showtimeId:
 
             return (
               <div key={section.id} className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-500 mb-3 text-center uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3 text-center uppercase tracking-wider">
                   {section.name} ( +${section.additionPrice} )
                 </h3>
                 <div 
@@ -177,16 +177,16 @@ export default function SeatSelectionPage(props: { params: Promise<{ showtimeId:
                     const isOccupied = occupiedSeatIds.has(seat.id);
                     const isSelected = selectedSeatIds.has(seat.id);
                     
-                    let bgClass = "bg-gray-200 hover:bg-gray-300 border-gray-300";
-                    if (isOccupied) bgClass = "bg-gray-800 text-gray-500 cursor-not-allowed opacity-50";
-                    else if (isSelected) bgClass = "bg-red-600 text-white border-red-700 hover:bg-red-700 shadow-sm";
+                    let bgClass = "bg-muted hover:bg-white/10 border-border text-foreground";
+                    if (isOccupied) bgClass = "bg-background text-muted-foreground/30 cursor-not-allowed border-transparent";
+                    else if (isSelected) bgClass = "bg-primary text-white border-primary/90 hover:bg-primary/90 shadow-sm shadow-primary/20";
 
                     return (
                       <button
                         key={seat.id}
                         disabled={isOccupied}
                         onClick={() => toggleSeat(seat.id)}
-                        className={`w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm rounded-t-lg rounded-b-sm border-b-4 flex items-center justify-center transition-all ${bgClass}`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm rounded-t-lg rounded-b-sm border-b-4 flex items-center justify-center transition-all cursor-pointer ${bgClass}`}
                         title={`Seat ${seat.number}`}
                       >
                         {seat.number}
@@ -199,31 +199,31 @@ export default function SeatSelectionPage(props: { params: Promise<{ showtimeId:
           })}
         </div>
 
-        <div className="flex items-center justify-center gap-6 mt-12 pt-6 border-t">
+        <div className="flex items-center justify-center gap-6 mt-12 pt-6 border-t border-border">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gray-200 border-b-4 border-gray-300 rounded-t-lg rounded-b-sm"></div>
-            <span className="text-sm text-gray-600 font-medium">Available</span>
+            <div className="w-6 h-6 bg-muted border-b-4 border-border rounded-t-lg rounded-b-sm"></div>
+            <span className="text-sm text-muted-foreground font-medium">Available</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-red-600 border-b-4 border-red-700 rounded-t-lg rounded-b-sm"></div>
-            <span className="text-sm text-gray-600 font-medium">Selected</span>
+            <div className="w-6 h-6 bg-primary border-b-4 border-primary/90 rounded-t-lg rounded-b-sm"></div>
+            <span className="text-sm text-muted-foreground font-medium">Selected</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gray-800 border-b-4 border-gray-900 rounded-t-lg rounded-b-sm opacity-50"></div>
-            <span className="text-sm text-gray-600 font-medium">Occupied</span>
+            <div className="w-6 h-6 bg-background border-b-4 border-transparent rounded-t-lg rounded-b-sm"></div>
+            <span className="text-sm text-muted-foreground font-medium">Occupied</span>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-lg shadow-md sticky bottom-4 border border-gray-100">
+      <div className="flex flex-col sm:flex-row justify-between items-center bg-card p-6 rounded-xl border border-border sticky bottom-4 z-10 shadow-2xl shadow-black/50">
         <div className="mb-4 sm:mb-0">
-          <p className="text-gray-600 mb-1">Selected Seats: <span className="font-semibold text-gray-900">{selectedSeatIds.size}</span></p>
-          <p className="text-2xl font-bold">Total: ${calculateTotal().toFixed(2)}</p>
+          <p className="text-muted-foreground mb-1">Selected Seats: <span className="font-semibold text-foreground">{selectedSeatIds.size}</span></p>
+          <p className="text-2xl font-bold text-foreground">Total: <span className="text-primary">${calculateTotal().toFixed(2)}</span></p>
         </div>
         <Button 
           onClick={handleReserve}
           disabled={selectedSeatIds.size === 0 || submitting}
-          className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-lg px-8 py-6 h-auto shadow-lg"
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-lg px-8 py-6 h-auto shadow-lg shadow-primary/20 cursor-pointer disabled:opacity-50"
         >
           {submitting ? "Reserving..." : "Reserve Seats"}
         </Button>

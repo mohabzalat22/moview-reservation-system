@@ -43,14 +43,14 @@ function StatCard({
 }) {
   return (
     <div
-      className="rounded-xl border bg-white p-5 shadow-sm flex flex-col gap-1"
-      style={{ borderLeftWidth: 4, borderLeftColor: accent ?? "#6366f1" }}
+      className="rounded-xl border border-border bg-card p-5 shadow-sm flex flex-col gap-1"
+      style={{ borderLeftWidth: 4, borderLeftColor: accent ?? "var(--primary)" }}
     >
-      <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
         {label}
       </span>
-      <span className="text-2xl font-bold text-gray-900">{value}</span>
-      {sub && <span className="text-xs text-gray-500">{sub}</span>}
+      <span className="text-2xl font-bold text-foreground">{value}</span>
+      {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
     </div>
   );
 }
@@ -63,7 +63,7 @@ function OccupancyRing({ rate }: { rate: number }) {
   const dash = (rate / 100) * circumference;
 
   const color =
-    rate >= 80 ? "#22c55e" : rate >= 50 ? "#f59e0b" : "#6366f1";
+    rate >= 80 ? "#22c55e" : rate >= 50 ? "#f59e0b" : "var(--primary)";
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -73,7 +73,7 @@ function OccupancyRing({ rate }: { rate: number }) {
           cy={50}
           r={r}
           fill="none"
-          stroke="#e5e7eb"
+          stroke="var(--muted)"
           strokeWidth={10}
         />
         <circle
@@ -92,14 +92,14 @@ function OccupancyRing({ rate }: { rate: number }) {
           x={50}
           y={54}
           textAnchor="middle"
-          fill="#111827"
+          fill="var(--foreground)"
           fontSize={14}
           fontWeight={700}
         >
           {rate.toFixed(1)}%
         </text>
       </svg>
-      <span className="text-xs text-gray-500 font-medium">Occupancy</span>
+      <span className="text-xs text-muted-foreground font-medium">Occupancy</span>
     </div>
   );
 }
@@ -115,33 +115,33 @@ function SectionRow({
 }) {
   const occupancy = s.totalSeats > 0 ? (s.reservedSeats / s.totalSeats) * 100 : 0;
   const barColor =
-    occupancy >= 80 ? "#22c55e" : occupancy >= 50 ? "#f59e0b" : "#6366f1";
+    occupancy >= 80 ? "#22c55e" : occupancy >= 50 ? "#f59e0b" : "var(--primary)";
 
   return (
-    <tr className="border-b last:border-0 hover:bg-gray-50 transition-colors">
-      <td className="py-3 px-4 font-medium text-gray-800">{s.sectionName}</td>
-      <td className="py-3 px-4 text-gray-600">
+    <tr className="border-b border-white/[0.04] last:border-0 hover:bg-white/5 transition-colors">
+      <td className="py-3 px-4 font-medium text-foreground">{s.sectionName}</td>
+      <td className="py-3 px-4 text-muted-foreground">
         +{s.additionPrice.toFixed(2)} {currency}
       </td>
-      <td className="py-3 px-4 text-center text-gray-600">{s.totalSeats}</td>
-      <td className="py-3 px-4 text-center text-gray-600">{s.reservedSeats}</td>
-      <td className="py-3 px-4 text-center text-gray-600">
+      <td className="py-3 px-4 text-center text-muted-foreground">{s.totalSeats}</td>
+      <td className="py-3 px-4 text-center text-muted-foreground">{s.reservedSeats}</td>
+      <td className="py-3 px-4 text-center text-muted-foreground">
         {s.totalSeats - s.reservedSeats}
       </td>
       <td className="py-3 px-4">
         <div className="flex items-center gap-2">
-          <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all"
               style={{ width: `${occupancy}%`, backgroundColor: barColor }}
             />
           </div>
-          <span className="text-xs text-gray-500 w-10 text-right">
+          <span className="text-xs text-muted-foreground w-10 text-right">
             {pct(s.reservedSeats, s.totalSeats)}%
           </span>
         </div>
       </td>
-      <td className="py-3 px-4 text-right font-semibold text-gray-800">
+      <td className="py-3 px-4 text-right font-semibold text-foreground">
         {s.revenue.toFixed(2)} {currency}
       </td>
     </tr>
@@ -160,21 +160,21 @@ function StatsPanel({
   const cur = stats.baseCurrency;
 
   return (
-    <div className="mt-6 rounded-2xl border bg-white shadow-md overflow-hidden">
+    <div className="mt-6 rounded-2xl border border-border bg-card shadow-md overflow-hidden">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-5">
+      <div className="flex items-start justify-between gap-4 bg-primary px-6 py-5">
         <div>
-          <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-1">
+          <p className="text-white/80 text-xs font-semibold uppercase tracking-widest mb-1">
             Showtime Analytics
           </p>
           <h2 className="text-white text-xl font-bold">{stats.movieTitle}</h2>
-          <p className="text-indigo-200 text-sm mt-0.5">
+          <p className="text-white/90 text-sm mt-0.5">
             {stats.hallName} · {fmt(stats.showTimeStart)} — {fmt(stats.showTimeEnd)}
           </p>
         </div>
         <button
           onClick={onClose}
-          className="text-indigo-200 hover:text-white mt-0.5 text-xl leading-none transition-colors"
+          className="text-white/80 hover:text-white mt-0.5 text-xl leading-none transition-colors cursor-pointer"
           aria-label="Close stats"
         >
           ✕
@@ -191,13 +191,13 @@ function StatsPanel({
             <StatCard
               label="Total Seats"
               value={stats.totalSeats}
-              accent="#6366f1"
+              accent="var(--foreground)"
             />
             <StatCard
               label="Reserved"
               value={stats.reservedSeats}
               sub={`${pct(stats.reservedSeats, stats.totalSeats)}% of capacity`}
-              accent="#f59e0b"
+              accent="var(--primary)"
             />
             <StatCard
               label="Available"
@@ -209,7 +209,7 @@ function StatsPanel({
               label="Total Revenue"
               value={`${stats.totalRevenue.toFixed(2)} ${cur}`}
               sub={`Base price: ${stats.basePrice.toFixed(2)} ${cur}`}
-              accent="#ec4899"
+              accent="var(--muted-foreground)"
             />
           </div>
         </div>
@@ -217,12 +217,12 @@ function StatsPanel({
         {/* Section breakdown table */}
         {stats.sectionBreakdown.length > 0 ? (
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               Section Breakdown
             </h3>
-            <div className="overflow-x-auto rounded-xl border">
+            <div className="overflow-x-auto rounded-xl border border-border">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                <thead className="bg-white/[0.03] text-muted-foreground text-xs uppercase tracking-wider">
                   <tr>
                     <th className="py-3 px-4 text-left">Section</th>
                     <th className="py-3 px-4 text-left">Price Add-on</th>
@@ -233,7 +233,7 @@ function StatsPanel({
                     <th className="py-3 px-4 text-right">Revenue</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-white/[0.04]">
                   {stats.sectionBreakdown.map((s) => (
                     <SectionRow key={s.sectionId} s={s} currency={cur} />
                   ))}
@@ -242,7 +242,7 @@ function StatsPanel({
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-400 italic text-center py-4">
+          <p className="text-sm text-muted-foreground italic text-center py-4">
             No sections configured for this hall.
           </p>
         )}
@@ -309,10 +309,10 @@ export default function ShowtimeAnalyticsTab() {
       {/* Section header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-foreground">
             Showtime Analytics
           </h2>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-muted-foreground mt-0.5">
             Select a showtime to view capacity and revenue breakdown.
           </p>
         </div>
@@ -321,19 +321,19 @@ export default function ShowtimeAnalyticsTab() {
           placeholder="Search by movie…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 w-56"
+          className="bg-muted border border-border text-foreground placeholder:text-muted-foreground/50 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary focus:border-primary w-56 transition-all"
         />
       </div>
 
       {/* Loading / error */}
       {loading && (
-        <div className="flex items-center gap-2 text-sm text-gray-400 py-8 justify-center">
-          <span className="animate-spin inline-block w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full" />
+        <div className="flex items-center gap-2 text-sm text-muted-foreground py-8 justify-center">
+          <span className="animate-spin inline-block w-4 h-4 border-2 border-primary border-t-transparent rounded-full" />
           Loading showtimes…
         </div>
       )}
       {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3">
+        <div className="rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm px-4 py-3">
           {error}
         </div>
       )}
@@ -342,7 +342,7 @@ export default function ShowtimeAnalyticsTab() {
       {!loading && !error && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.length === 0 && (
-            <p className="text-sm text-gray-400 col-span-full text-center py-8">
+            <p className="text-sm text-muted-foreground col-span-full text-center py-8">
               No showtimes found.
             </p>
           )}
@@ -352,33 +352,33 @@ export default function ShowtimeAnalyticsTab() {
               <button
                 key={st.id}
                 onClick={() => loadStats(st.id)}
-                className={`text-left rounded-xl border p-4 transition-all shadow-sm hover:shadow-md hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
+                className={`text-left rounded-xl border p-4 transition-all shadow-sm hover:shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary ${
                   isSelected
-                    ? "border-indigo-500 bg-indigo-50"
-                    : "border-gray-200 bg-white"
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-card hover:border-white/20"
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <p
                     className={`font-semibold text-sm truncate ${
-                      isSelected ? "text-indigo-700" : "text-gray-900"
+                      isSelected ? "text-primary" : "text-foreground"
                     }`}
                   >
                     {getMovieTitle(st.movieId)}
                   </p>
                   {isSelected && (
-                    <span className="shrink-0 text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+                    <span className="shrink-0 text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
                       Selected
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {new Date(st.showTimeStart).toLocaleString(undefined, {
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}
                 </p>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs text-muted-foreground/60 mt-0.5">
                   Base: {Number(st.basePrice).toFixed(2)} {st.baseCurrency ?? "EGP"}
                 </p>
               </button>
@@ -389,15 +389,15 @@ export default function ShowtimeAnalyticsTab() {
 
       {/* Stats loading indicator */}
       {statsLoading && (
-        <div className="flex items-center gap-2 text-sm text-indigo-500 py-6 justify-center">
-          <span className="animate-spin inline-block w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full" />
+        <div className="flex items-center gap-2 text-sm text-primary py-6 justify-center">
+          <span className="animate-spin inline-block w-4 h-4 border-2 border-primary border-t-transparent rounded-full" />
           Fetching analytics…
         </div>
       )}
 
       {/* Stats error */}
       {statsError && (
-        <div className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3">
+        <div className="rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm px-4 py-3">
           {statsError}
         </div>
       )}

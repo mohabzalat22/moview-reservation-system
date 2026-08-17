@@ -16,14 +16,12 @@ import { ReservationStatus } from "@/dto/reservation.dto";
 import type { Movie } from "@/dto/movie.dto";
 import type { ShowTime } from "@/dto/showTime.dto";
 import type { Hall } from "@/dto/hall.dto";
-import type { Seat } from "@/dto/seat.dto";
-import type { Section } from "@/dto/section.dto";
 import { use } from "react";
 
 const STATUS_CONFIG: Record<ReservationStatus, { label: string; className: string }> = {
-  [ReservationStatus.PENDING]:   { label: "Pending",   className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-  [ReservationStatus.CONFIRMED]: { label: "Confirmed", className: "bg-green-100 text-green-800 border-green-200" },
-  [ReservationStatus.CANCELLED]: { label: "Cancelled", className: "bg-red-100 text-red-800 border-red-200" },
+  [ReservationStatus.PENDING]:   { label: "Pending",   className: "bg-yellow-500/15 text-yellow-400 border-yellow-500/20" },
+  [ReservationStatus.CONFIRMED]: { label: "Confirmed", className: "bg-green-500/15 text-green-400 border-green-500/20" },
+  [ReservationStatus.CANCELLED]: { label: "Cancelled", className: "bg-red-500/15 text-red-400 border-red-500/20" },
 };
 
 export default function ReservationDetailsPage(props: { params: Promise<{ id: string }> }) {
@@ -109,14 +107,14 @@ export default function ReservationDetailsPage(props: { params: Promise<{ id: st
   }
 
   if (isLoading || loadingData) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-muted-foreground">Loading...</div>;
   }
 
   if (!reservation) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Reservation not found</h1>
-        <Link href="/reservations" className="text-blue-500 hover:underline">Back to My Reservations</Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-primary mb-4">Reservation not found</h1>
+        <Link href="/reservations" className="text-muted-foreground hover:text-white hover:underline transition-colors">Back to My Reservations</Link>
       </div>
     );
   }
@@ -129,18 +127,18 @@ export default function ReservationDetailsPage(props: { params: Promise<{ id: st
   const isCancellable = isUpcoming && status !== ReservationStatus.CANCELLED;
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-64px)]">
-      <Link href="/reservations" className="text-blue-500 hover:underline mb-6 inline-block">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-64px)]">
+      <Link href="/reservations" className="text-muted-foreground hover:text-primary transition-colors mb-6 inline-block text-sm">
         &larr; Back to My Reservations
       </Link>
       
-      <h1 className="text-3xl font-bold mb-6">Reservation Details</h1>
+      <h1 className="text-3xl font-bold mb-6 text-foreground">Reservation Details</h1>
       
-      <div className="bg-white rounded-lg shadow-sm border p-6 max-w-2xl">
-        <div className="flex justify-between items-start mb-6 pb-6 border-b">
+      <div className="bg-card rounded-xl shadow-sm border border-border p-6 max-w-2xl">
+        <div className="flex justify-between items-start mb-6 pb-6 border-b border-border">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Reservation ID</p>
-            <p className="font-mono text-sm">{reservation.id}</p>
+            <p className="text-sm text-muted-foreground mb-1">Reservation ID</p>
+            <p className="font-mono text-sm text-foreground">{reservation.id}</p>
           </div>
           <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${statusConfig.className}`}>
             {statusConfig.label}
@@ -150,12 +148,12 @@ export default function ReservationDetailsPage(props: { params: Promise<{ id: st
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Movie</p>
-              <p className="font-medium text-lg">{movie?.title || "Unknown"}</p>
+              <p className="text-sm text-muted-foreground mb-1">Movie</p>
+              <p className="font-medium text-lg text-foreground">{movie?.title || "Unknown"}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Date &amp; Time</p>
-              <p className="font-medium text-lg">
+              <p className="text-sm text-muted-foreground mb-1">Date &amp; Time</p>
+              <p className="font-medium text-lg text-foreground">
                 {date ? `${date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })} - ${date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}` : "Unknown"}
               </p>
             </div>
@@ -163,12 +161,12 @@ export default function ReservationDetailsPage(props: { params: Promise<{ id: st
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Hall</p>
-              <p className="font-medium text-lg">{hall?.name || "Unknown"}</p>
+              <p className="text-sm text-muted-foreground mb-1">Hall</p>
+              <p className="font-medium text-lg text-foreground">{hall?.name || "Unknown"}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Seats</p>
-              <p className="font-medium text-lg">
+              <p className="text-sm text-muted-foreground mb-1">Seats</p>
+              <p className="font-medium text-lg text-foreground">
                 {reservedSeatsInfo.length > 0 
                   ? reservedSeatsInfo.map(s => `${s.sectionName}-${s.number}`).join(", ") 
                   : "None"}
@@ -177,23 +175,23 @@ export default function ReservationDetailsPage(props: { params: Promise<{ id: st
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t">
+        <div className="mt-8 pt-6 border-t border-border">
           <div className="flex justify-between items-center mb-4">
             <div>
-               <p className="text-sm text-gray-500 mb-1">Booked on</p>
-               <p className="text-sm font-medium">{new Date(reservation.createdAt || Date.now()).toLocaleDateString()}</p>
+               <p className="text-sm text-muted-foreground mb-1">Booked on</p>
+               <p className="text-sm font-medium text-foreground">{new Date(reservation.createdAt || Date.now()).toLocaleDateString()}</p>
             </div>
-            <p className="text-2xl font-bold text-red-600">Total: ${totalPrice.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-primary">Total: ${totalPrice.toFixed(2)}</p>
           </div>
 
           {cancelError && (
-            <p className="text-red-600 text-sm mb-3">{cancelError}</p>
+            <p className="text-primary text-sm mb-3">{cancelError}</p>
           )}
 
           {isCancellable && (
             <Button
               variant="outline"
-              className="w-full border-red-300 text-red-600 hover:bg-red-50"
+              className="w-full border-primary/30 text-primary hover:bg-primary/10 hover:text-primary cursor-pointer mt-2"
               disabled={cancelling}
               onClick={handleCancel}
             >

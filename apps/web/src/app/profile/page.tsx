@@ -117,7 +117,7 @@ export default function ProfilePage() {
   if (isLoading || !user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-gray-500">Loading…</p>
+        <p className="text-muted-foreground">Loading…</p>
       </div>
     );
   }
@@ -130,40 +130,40 @@ export default function ProfilePage() {
     const date = showtime ? new Date(showtime.showTimeStart) : null;
 
     return (
-      <div key={res.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b last:border-0 gap-4">
+      <div key={res.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-border last:border-0 gap-4">
         <div>
-          <h4 className="font-bold">{movie?.title || "Unknown Movie"}</h4>
-          <p className="text-sm text-gray-500">
+          <h4 className="font-bold text-foreground line-clamp-1">{movie?.title || "Unknown Movie"}</h4>
+          <p className="text-sm text-muted-foreground">
             {date ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : "-"} at {date ? date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : "-"}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             {hall?.name || "Unknown Hall"} • {seatCount} Ticket{seatCount !== 1 ? 's' : ''}
           </p>
         </div>
         <Link href={`/reservations/${res.id}`}>
-          <Button variant="outline" size="sm">View Ticket</Button>
+          <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:text-foreground hover:bg-white/10 cursor-pointer">View Ticket</Button>
         </Link>
       </div>
     );
   };
 
   return (
-    <div className="container max-w-4xl py-10 mx-auto">
+    <div className="max-w-7xl px-4 sm:px-6 lg:px-8 py-10 mx-auto min-h-[calc(100vh-64px)]">
       <div className="flex flex-col gap-8 md:flex-row md:items-start">
-        <Card className="w-full md:w-1/3">
+        <Card className="w-full md:w-1/3 bg-card border-border">
           <CardHeader className="text-center flex flex-col items-center">
             <Avatar className="w-24 h-24 mb-4">
-              <AvatarFallback className="text-2xl bg-red-100 text-red-600">
+              <AvatarFallback className="text-2xl bg-primary text-white">
                 {getInitials(user.name, user.email)}
               </AvatarFallback>
             </Avatar>
-            <CardTitle>{user.name ?? "User"}</CardTitle>
-            <CardDescription>{user.email}</CardDescription>
-            <p className="mt-1 text-xs font-medium uppercase tracking-widest text-gray-400">
+            <CardTitle className="text-foreground">{user.name ?? "User"}</CardTitle>
+            <CardDescription className="text-muted-foreground">{user.email}</CardDescription>
+            <p className="mt-1 text-xs font-medium uppercase tracking-widest text-primary">
               {user.role}
             </p>
             <Button
-              className="w-full mt-4"
+              className="w-full mt-4 border-border text-muted-foreground hover:text-foreground hover:bg-white/10 cursor-pointer"
               variant="outline"
               onClick={() => {
                 logout();
@@ -176,28 +176,28 @@ export default function ProfilePage() {
         </Card>
         <div className="w-full md:w-2/3">
           <Tabs defaultValue="tickets" className="w-full">
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="tickets">My Tickets</TabsTrigger>
-              <TabsTrigger value="history">History</TabsTrigger>
+            <TabsList className="w-full justify-start bg-card border border-border p-1">
+              <TabsTrigger value="tickets" className="data-[state=active]:bg-muted data-[state=active]:text-foreground text-muted-foreground cursor-pointer">My Tickets</TabsTrigger>
+              <TabsTrigger value="history" className="data-[state=active]:bg-muted data-[state=active]:text-foreground text-muted-foreground cursor-pointer">History</TabsTrigger>
             </TabsList>
             
             <TabsContent value="tickets" className="mt-6">
-              <Card>
+              <Card className="bg-card border-border">
                 <CardHeader>
-                  <CardTitle>Upcoming Reservations</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-foreground">Upcoming Reservations</CardTitle>
+                  <CardDescription className="text-muted-foreground">
                     Your upcoming movie reservations.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {loadingData ? (
-                    <div className="text-center text-gray-500 py-8">Loading...</div>
+                    <div className="text-center text-muted-foreground py-8">Loading...</div>
                   ) : upcoming.length === 0 ? (
-                    <div className="text-center text-gray-500 py-8">
+                    <div className="text-center text-muted-foreground py-8">
                       No upcoming reservations found.
                       <div className="mt-4">
                         <Link href="/movies">
-                          <Button variant="link" className="text-red-600">Browse Movies &rarr;</Button>
+                          <Button variant="link" className="text-primary cursor-pointer">Browse Movies &rarr;</Button>
                         </Link>
                       </div>
                     </div>
@@ -211,16 +211,16 @@ export default function ProfilePage() {
             </TabsContent>
 
             <TabsContent value="history" className="mt-6">
-              <Card>
+              <Card className="bg-card border-border">
                 <CardHeader>
-                  <CardTitle>Past Reservations</CardTitle>
-                  <CardDescription>Your movie viewing history.</CardDescription>
+                  <CardTitle className="text-foreground">Past Reservations</CardTitle>
+                  <CardDescription className="text-muted-foreground">Your movie viewing history.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {loadingData ? (
-                    <div className="text-center text-gray-500 py-8">Loading...</div>
+                    <div className="text-center text-muted-foreground py-8">Loading...</div>
                   ) : history.length === 0 ? (
-                    <div className="text-center text-gray-500 py-8">
+                    <div className="text-center text-muted-foreground py-8">
                       No past reservations found.
                     </div>
                   ) : (

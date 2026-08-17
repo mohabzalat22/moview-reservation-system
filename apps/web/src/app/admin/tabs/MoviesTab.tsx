@@ -111,13 +111,13 @@ export default function MoviesTab() {
                     type="checkbox" 
                     checked={(form.genreIds || []).includes(g.id)}
                     onChange={() => toggleGenre(g.id)}
-                    className="rounded text-red-600 focus:ring-red-500"
+                    className="rounded text-primary focus:ring-primary"
                   />
                   <span>{g.name}</span>
                 </label>
               ))}
             </div>
-            {genres.length === 0 && <span className="text-sm text-gray-500">No genres found. Create genres first.</span>}
+            {genres.length === 0 && <span className="text-sm text-muted-foreground">No genres found. Create genres first.</span>}
           </Field>
         </Modal>
       )}

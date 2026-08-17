@@ -52,25 +52,25 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-[#141414] py-12">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center min-h-[calc(100vh-64px)] py-12 px-4">
+      <Card className="w-full max-w-md bg-card border-border">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight text-center">
+          <CardTitle className="text-2xl font-bold tracking-tight text-center text-foreground">
             Create an account
           </CardTitle>
-          <CardDescription className="text-center">
+          <CardDescription className="text-center text-muted-foreground">
             Enter your details to create your account
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+              <div className="text-sm text-primary bg-primary/10 border border-primary/20 rounded-md px-3 py-2">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-muted-foreground">Full Name</Label>
               <Input
                 id="name"
                 placeholder="John Doe"
@@ -78,10 +78,11 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={loading}
+                className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-muted-foreground">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -90,10 +91,11 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
+                className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-muted-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -102,10 +104,11 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
+                className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="text-muted-foreground">Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -113,16 +116,17 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
+                className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50"
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={loading}>
+          <CardFooter className="flex flex-col space-y-4 border-t-white/[0.06]">
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-semibold cursor-pointer" disabled={loading}>
               {loading ? "Creating account…" : "Sign up"}
             </Button>
-            <div className="text-sm text-center text-gray-500">
+            <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login" className="text-red-500 hover:underline">
+              <Link href="/login" className="text-primary hover:underline">
                 Sign in
               </Link>
             </div>

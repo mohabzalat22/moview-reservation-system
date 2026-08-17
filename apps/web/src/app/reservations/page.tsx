@@ -16,9 +16,9 @@ import type { ShowTime } from "@/dto/showTime.dto";
 import type { Hall } from "@/dto/hall.dto";
 
 const STATUS_CONFIG: Record<ReservationStatus, { label: string; className: string }> = {
-  [ReservationStatus.PENDING]:   { label: "Pending",   className: "bg-yellow-100 text-yellow-800" },
-  [ReservationStatus.CONFIRMED]: { label: "Confirmed", className: "bg-green-100 text-green-800" },
-  [ReservationStatus.CANCELLED]: { label: "Cancelled", className: "bg-red-100 text-red-800" },
+  [ReservationStatus.PENDING]:   { label: "Pending",   className: "bg-yellow-500/15 text-yellow-400 border-yellow-500/20" },
+  [ReservationStatus.CONFIRMED]: { label: "Confirmed", className: "bg-green-500/15 text-green-400 border-green-500/20" },
+  [ReservationStatus.CANCELLED]: { label: "Cancelled", className: "bg-red-500/15 text-red-400 border-red-500/20" },
 };
 
 export default function MyReservationsPage() {
@@ -114,7 +114,7 @@ export default function MyReservationsPage() {
   }
 
   if (isLoading || loadingData) {
-    return <div className="container mx-auto px-4 py-8">Loading reservations...</div>;
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-muted-foreground">Loading reservations...</div>;
   }
 
   const renderReservationCard = (res: Reservation, isUpcoming: boolean) => {
@@ -129,48 +129,48 @@ export default function MyReservationsPage() {
     const isCancellable = isUpcoming && status !== ReservationStatus.CANCELLED;
 
     return (
-      <div key={res.id} className="bg-white border rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col">
-        <div className="flex justify-between items-start mb-4 border-b pb-4">
+      <div key={res.id} className="bg-card border border-border rounded-xl p-6 hover:border-border transition-colors flex flex-col">
+        <div className="flex justify-between items-start mb-4 border-b border-border pb-4">
           <div>
-            <h3 className="font-bold text-lg line-clamp-1">{movie?.title || "Unknown Movie"}</h3>
-            <p className="text-gray-500 text-sm">{hall?.name || "Unknown Hall"}</p>
+            <h3 className="font-bold text-lg text-foreground line-clamp-1">{movie?.title || "Unknown Movie"}</h3>
+            <p className="text-muted-foreground text-sm">{hall?.name || "Unknown Hall"}</p>
           </div>
-          <span className={`text-xs font-semibold px-2 py-1 rounded-full ${statusConfig.className}`}>
+          <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${statusConfig.className}`}>
             {statusConfig.label}
           </span>
         </div>
         
         <div className="flex-1 space-y-2 mb-6">
           <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Date</span>
-            <span className="font-medium text-sm">
+            <span className="text-muted-foreground text-sm">Date</span>
+            <span className="font-medium text-sm text-foreground">
               {date ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : "-"}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Time</span>
-            <span className="font-medium text-sm">
+            <span className="text-muted-foreground text-sm">Time</span>
+            <span className="font-medium text-sm text-foreground">
               {date ? date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : "-"}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Seats</span>
-            <span className="font-medium text-sm">{seatCount} Ticket{seatCount !== 1 ? 's' : ''}</span>
+            <span className="text-muted-foreground text-sm">Seats</span>
+            <span className="font-medium text-sm text-foreground">{seatCount} Ticket{seatCount !== 1 ? 's' : ''}</span>
           </div>
-          <div className="flex justify-between border-t pt-2 mt-2">
-            <span className="font-semibold text-gray-700">Total</span>
-            <span className="font-bold text-red-600">${totalPrice.toFixed(2)}</span>
+          <div className="flex justify-between border-t border-border pt-2 mt-2">
+            <span className="font-semibold text-muted-foreground">Total</span>
+            <span className="font-bold text-primary">${totalPrice.toFixed(2)}</span>
           </div>
         </div>
 
         <div className="flex gap-2 mt-auto">
           <Link href={`/reservations/${res.id}`} className="flex-1">
-            <Button variant="outline" className="w-full">View Details</Button>
+            <Button variant="outline" className="w-full border-border text-muted-foreground hover:text-white hover:bg-white/10 cursor-pointer">View Details</Button>
           </Link>
           {isCancellable && (
             <Button
               variant="outline"
-              className="border-red-300 text-red-600 hover:bg-red-50"
+              className="border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
               disabled={cancellingId === res.id}
               onClick={() => handleCancel(res.id)}
             >
@@ -183,22 +183,22 @@ export default function MyReservationsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-64px)]">
-      <h1 className="text-3xl font-bold mb-8">My Reservations</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-64px)]">
+      <h1 className="text-3xl font-bold mb-8 text-foreground">My Reservations</h1>
       
       {upcoming.length === 0 && history.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
-          <p className="text-gray-500 mb-6">You don&apos;t have any reservations yet.</p>
+        <div className="bg-card rounded-xl border border-border p-8 text-center">
+          <p className="text-muted-foreground mb-6">You don&apos;t have any reservations yet.</p>
           <Link href="/movies">
-            <Button className="bg-red-600 hover:bg-red-700">Browse Movies</Button>
+            <Button className="bg-primary hover:bg-primary/90 text-white cursor-pointer">Browse Movies</Button>
           </Link>
         </div>
       ) : (
         <>
           <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 pb-2 border-b">Upcoming Reservations</h2>
+            <h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-border text-foreground">Upcoming Reservations</h2>
             {upcoming.length === 0 ? (
-              <p className="text-gray-500 italic">No upcoming reservations.</p>
+              <p className="text-muted-foreground italic">No upcoming reservations.</p>
             ) : (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {upcoming.map(r => renderReservationCard(r, true))}
@@ -207,9 +207,9 @@ export default function MyReservationsPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-6 pb-2 border-b">Past Reservations</h2>
+            <h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-border text-foreground">Past Reservations</h2>
             {history.length === 0 ? (
-              <p className="text-gray-500 italic">No past reservations.</p>
+              <p className="text-muted-foreground italic">No past reservations.</p>
             ) : (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {history.map(r => renderReservationCard(r, false))}

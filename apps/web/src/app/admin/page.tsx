@@ -12,7 +12,7 @@ import ReservationsTab from "./tabs/ReservationsTab";
 import ShowtimeAnalyticsTab from "./tabs/ShowtimeAnalyticsTab";
 
 const TABS = [
-  { id: "movies", label: " Movies" },
+  { id: "movies", label: "Movies" },
   { id: "genres", label: "Genres" },
   { id: "halls", label: "Halls" },
   { id: "sections", label: "Sections" },
@@ -32,31 +32,33 @@ export default function AdminPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-3">
-          <h2 className="text-2xl font-bold text-gray-800">Access Denied</h2>
-          <p className="text-gray-500">You need admin privileges to view this page.</p>
+          <h2 className="text-2xl font-bold text-foreground">Access Denied</h2>
+          <p className="text-muted-foreground">You need admin privileges to view this page.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b px-6 py-5 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Manage your cinema system resources</p>
+    <div className="min-h-screen bg-background">
+      <div className="border-b border-border px-4 sm:px-6 lg:px-8 py-5">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage your cinema system resources</p>
+        </div>
       </div>
 
       {/* Tab Bar */}
-      <div className="bg-white border-b px-6 overflow-x-auto">
-        <div className="flex gap-1 min-w-max">
+      <div className="border-b border-border px-4 sm:px-6 lg:px-8 overflow-x-auto bg-background">
+        <div className="max-w-7xl mx-auto flex gap-1 min-w-max">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === tab.id
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-white/20"
               }`}
             >
               {tab.label}
@@ -66,7 +68,7 @@ export default function AdminPage() {
       </div>
 
       {/* Tab Content */}
-      <div className="p-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {activeTab === "movies" && <MoviesTab />}
         {activeTab === "genres" && <GenresTab />}
         {activeTab === "halls" && <HallsTab />}

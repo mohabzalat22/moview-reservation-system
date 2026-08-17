@@ -39,59 +39,101 @@ export function ShowTimesSection() {
   }, [date]); // re-fetches every time date changes
 
   return (
-    <div className="w-full max-w-7xl mx-auto text-left py-8">
-      <h2 className="text-3xl font-bold mb-6 text-white border-l-4 border-red-600 pl-3">Now Showing</h2>
+    <div className="w-full text-left py-8">
+      <h2 className="text-3xl font-bold mb-6 text-foreground border-l-4 border-primary pl-3">Now Showing</h2>
 
       {/* Date Filter */}
-      <div className="flex items-center gap-4 mb-8">
-        <Label htmlFor="date-filter" className="text-base font-semibold whitespace-nowrap text-gray-300">
-          Filter by Date
-        </Label>
-        <Input
-          id="date-filter"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-48 bg-[#222] border-[#444] text-white"
-        />
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-foreground">Select Date</h3>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <span className="text-sm text-muted-foreground hidden sm:block group-hover:text-foreground transition-colors">
+              Or pick from calendar:
+            </span>
+            <Input
+              id="date-picker"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              onClick={(e) => {
+                try {
+                  if ("showPicker" in HTMLInputElement.prototype) {
+                    (e.target as HTMLInputElement).showPicker();
+                  }
+                } catch (err) {
+                  // Fallback for browsers that do not support showPicker
+                }
+              }}
+              className="w-auto h-8 text-xs bg-card border-border text-foreground cursor-pointer"
+            />
+          </label>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-4 pt-2 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {Array.from({ length: 14 }).map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const dateStr = getLocalDateStr(d);
+            const isSelected = date === dateStr;
+            
+            const dayName = i === 0 ? "Today" : i === 1 ? "Tmrw" : d.toLocaleDateString("en-US", { weekday: "short" });
+            const dayNumber = d.getDate();
+            const monthName = d.toLocaleDateString("en-US", { month: "short" });
+            
+            return (
+              <button
+                key={dateStr}
+                onClick={() => setDate(dateStr)}
+                className={`flex shrink-0 flex-col items-center justify-center min-w-[5rem] h-20 rounded-xl border transition-all duration-300 ${
+                  isSelected
+                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/25 scale-105"
+                    : "bg-card border-border/60 text-muted-foreground hover:border-primary/50 hover:text-foreground hover:bg-card/80"
+                }`}
+              >
+                <span className={`text-xs font-semibold uppercase tracking-wider ${isSelected ? 'text-white/90' : ''}`}>{dayName}</span>
+                <span className={`text-2xl font-bold mt-0.5 ${isSelected ? "text-white" : "text-foreground"}`}>{dayNumber}</span>
+                <span className={`text-[10px] font-medium uppercase tracking-wider ${isSelected ? 'text-white/80' : ''}`}>{monthName}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Results */}
       {loading ? (
-        <p className="text-gray-400 text-lg">Loading showtimes...</p>
+        <p className="text-muted-foreground text-lg">Loading showtimes...</p>
       ) : showTimes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {showTimes.map((st) => (
-            <Card key={st.id} className="overflow-hidden bg-[#181818] border-[#333] text-white hover:scale-105 transition-transform duration-300">
+            <Card key={st.id} className="overflow-hidden bg-card border-border text-foreground hover:scale-[1.03] hover:border-primary/30 transition-all duration-300 group">
               {st.movie?.poster && (
                 <img
                   src={st.movie.poster}
                   alt={st.movie.title}
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300"
                 />
               )}
               <CardHeader>
-                <CardTitle className="text-white font-bold">{st.movie?.title || "Unknown Movie"}</CardTitle>
-                <CardDescription className="line-clamp-2 text-gray-400">
+                <CardTitle className="text-foreground font-bold">{st.movie?.title || "Unknown Movie"}</CardTitle>
+                <CardDescription className="line-clamp-2 text-muted-foreground">
                   {st.movie?.description || "No description available."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm font-medium text-gray-400">
-                    <strong className="text-gray-200">Hall:</strong> {st.hall?.name || "Unknown"}
+                  <p className="text-sm font-medium text-muted-foreground">
+                    <strong className="text-foreground">Hall:</strong> {st.hall?.name || "Unknown"}
                   </p>
-                  <p className="text-sm font-medium text-gray-400">
-                    <strong className="text-gray-200">Start Time:</strong>{" "}
+                  <p className="text-sm font-medium text-muted-foreground">
+                    <strong className="text-foreground">Start Time:</strong>{" "}
                     {new Date(st.showTimeStart).toLocaleString()}
                   </p>
-                  <p className="text-sm font-medium text-gray-400">
-                    <strong className="text-gray-200">Price:</strong> {st.basePrice} {st.baseCurrency || "EGP"}
+                  <p className="text-sm font-medium text-muted-foreground">
+                    <strong className="text-foreground">Price:</strong> {st.basePrice} {st.baseCurrency || "EGP"}
                   </p>
                   <Link
                     href="/login"
                     className={buttonVariants({
-                      className: "w-full mt-4 bg-red-600 hover:bg-red-700",
+                      className: "w-full mt-4 bg-primary hover:bg-primary/90 text-white font-semibold",
                     })}
                   >
                     Book Tickets
@@ -102,7 +144,7 @@ export function ShowTimesSection() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-400 text-lg">No upcoming showtimes for the selected date.</p>
+        <p className="text-muted-foreground text-lg">No upcoming showtimes for the selected date.</p>
       )}
     </div>
   );

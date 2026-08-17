@@ -12,9 +12,9 @@ import type { Movie } from "@/dto/movie.dto";
 import { CrudTable, Modal, Field, inputCls, ConfirmDelete } from "./crud-ui";
 
 const STATUS_COLORS: Record<ReservationStatus, string> = {
-  [ReservationStatus.PENDING]:   "bg-yellow-100 text-yellow-800",
-  [ReservationStatus.CONFIRMED]: "bg-green-100 text-green-800",
-  [ReservationStatus.CANCELLED]: "bg-red-100 text-red-800",
+  [ReservationStatus.PENDING]:   "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20",
+  [ReservationStatus.CONFIRMED]: "bg-green-500/15 text-green-400 border border-green-500/20",
+  [ReservationStatus.CANCELLED]: "bg-red-500/15 text-red-400 border border-red-500/20",
 };
 
 const empty = (): CreateReservation => ({ userId: "", showTimeId: "" });
@@ -118,7 +118,7 @@ export default function ReservationsTab() {
           getShowTimeDisplay(r.showTimeId),
           <span
             key={r.id}
-            className={`text-xs font-semibold px-2 py-1 rounded-full ${STATUS_COLORS[r.status] ?? "bg-gray-100 text-gray-800"}`}
+            className={`text-xs font-semibold px-2 py-1 rounded-full ${STATUS_COLORS[r.status] ?? "bg-muted text-muted-foreground"}`}
           >
             {r.status ?? "PENDING"}
           </span>,

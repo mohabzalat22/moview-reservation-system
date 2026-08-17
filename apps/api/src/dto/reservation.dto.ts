@@ -1,5 +1,12 @@
+export enum ReservationStatus {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  CANCELLED = "CANCELLED",
+}
+
 export interface Reservation {
   id: string;
+  status: ReservationStatus;
   userId: string;
   showTimeId: string;
   createdAt: Date;
@@ -19,4 +26,8 @@ export interface UpdateReservation {
   showTimeId?: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface UpdateReservationStatus {
+  status: ReservationStatus;
 }

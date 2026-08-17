@@ -1,4 +1,4 @@
-import type { CreateReservation, UpdateReservation } from "../dto/reservation.dto";
+import type { CreateReservation, UpdateReservation, UpdateReservationStatus } from "../dto/reservation.dto";
 import { ReservationService } from "../services/reservation.service";
 import { ApiResponse } from "../utils/api-response";
 import type { Request, Response } from "express";
@@ -43,6 +43,29 @@ export class ReservationController {
     const data = req.body as UpdateReservation;
     const reservation = await this.reservationService.updateReservation(id, data);
     return this.apiResponse.success(res, reservation);
+  }
+
+  async updateStatus(req: Request, res: Response) {
+    const id = req.params.id as string;
+    const data = req.body as UpdateReservationStatus;
+    const requestingUserId = req.user!.id;
+    const requestingUserRole = req.user!.role;
+
+    try {
+      const reservation = await this.reservationService.updateReservationStatus(
+        id,
+        data,
+        requestingUserId,
+        requestingUserRole
+      );
+      return this.apiResponse.success(res, reservation);
+    } catch (err: unknown) {
+      const message = (err as Error).message;
+      if (message.startsWith("Forbidden")) {
+        return this.apiResponse.forbidden(res, message);
+      }
+      return this.apiResponse.notFound(res, message);
+    }
   }
 
   async delete(req: Request, res: Response) {

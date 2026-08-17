@@ -32,6 +32,18 @@ router.put(
   asyncWrapper(reservationController.update.bind(reservationController)),
 );
 
+/**
+ * PATCH /reservations/:id/status
+ * - Admin: can set PENDING, CONFIRMED, or CANCELLED
+ * - Authenticated user (owner): can only set CANCELLED
+ * Authorization logic is enforced in the service layer.
+ */
+router.patch(
+  "/reservations/:id/status",
+  authenticate,
+  asyncWrapper(reservationController.updateStatus.bind(reservationController)),
+);
+
 router.delete(
   "/reservations/:id",
   authenticate,

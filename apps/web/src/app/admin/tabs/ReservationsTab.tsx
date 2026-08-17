@@ -6,9 +6,16 @@ import * as svc from "@/services/reservations.service";
 import * as showtimesSvc from "@/services/showtimes.service";
 import * as moviesSvc from "@/services/movies.service";
 import type { Reservation, CreateReservation } from "@/dto/reservation.dto";
+import { ReservationStatus } from "@/dto/reservation.dto";
 import type { ShowTime } from "@/dto/showTime.dto";
 import type { Movie } from "@/dto/movie.dto";
 import { CrudTable, Modal, Field, inputCls, ConfirmDelete } from "./crud-ui";
+
+const STATUS_COLORS: Record<ReservationStatus, string> = {
+  [ReservationStatus.PENDING]:   "bg-yellow-100 text-yellow-800",
+  [ReservationStatus.CONFIRMED]: "bg-green-100 text-green-800",
+  [ReservationStatus.CANCELLED]: "bg-red-100 text-red-800",
+};
 
 const empty = (): CreateReservation => ({ userId: "", showTimeId: "" });
 
@@ -24,6 +31,10 @@ export default function ReservationsTab() {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Status change modal state
+  const [statusModalId, setStatusModalId] = useState<string | null>(null);
+  const [statusValue, setStatusValue] = useState<ReservationStatus>(ReservationStatus.PENDING);
 
   async function load() {
     if (!accessToken) return;
@@ -48,6 +59,12 @@ export default function ReservationsTab() {
   function openAdd() { setForm({ userId: user?.id || "", showTimeId: "" }); setEditId(null); setShowModal(true); }
   function openEdit(i: number) { const r = items[i]; setForm({ userId: r.userId, showTimeId: r.showTimeId }); setEditId(r.id); setShowModal(true); }
 
+  function openStatusModal(i: number) {
+    const r = items[i];
+    setStatusModalId(r.id);
+    setStatusValue(r.status || ReservationStatus.PENDING);
+  }
+
   async function handleSave() {
     if (!accessToken) return;
     setSaving(true);
@@ -55,6 +72,17 @@ export default function ReservationsTab() {
       if (editId) await svc.updateReservation(accessToken, editId, form);
       else await svc.createReservation(accessToken, form);
       setShowModal(false); await load();
+    } catch (e: unknown) { setError((e as Error).message); }
+    finally { setSaving(false); }
+  }
+
+  async function handleStatusSave() {
+    if (!accessToken || !statusModalId) return;
+    setSaving(true);
+    try {
+      await svc.updateReservationStatus(accessToken, statusModalId, { status: statusValue });
+      setStatusModalId(null);
+      await load();
     } catch (e: unknown) { setError((e as Error).message); }
     finally { setSaving(false); }
   }
@@ -84,14 +112,26 @@ export default function ReservationsTab() {
         onAdd={openAdd}
         isLoading={loading}
         error={error}
-        headers={["User ID", "Showtime", "Created At"]}
+        headers={["User ID", "Showtime", "Status", "Created At"]}
         rows={items.map((r) => [
           r.userId,
           getShowTimeDisplay(r.showTimeId),
+          <span
+            key={r.id}
+            className={`text-xs font-semibold px-2 py-1 rounded-full ${STATUS_COLORS[r.status] ?? "bg-gray-100 text-gray-800"}`}
+          >
+            {r.status ?? "PENDING"}
+          </span>,
           formatDateForDisplay(r.createdAt || "")
         ])}
         onEdit={openEdit}
         onDelete={(i) => setDeleteId(items[i].id)}
+        extraActions={[
+          {
+            label: "Change Status",
+            onClick: openStatusModal,
+          }
+        ]}
       />
 
       {showModal && (
@@ -101,6 +141,28 @@ export default function ReservationsTab() {
             <select className={inputCls} value={form.showTimeId} onChange={set("showTimeId")}>
               <option value="">Select Showtime...</option>
               {showTimes.map(st => <option key={st.id} value={st.id}>{getShowTimeDisplay(st.id)}</option>)}
+            </select>
+          </Field>
+        </Modal>
+      )}
+
+      {/* Status Change Modal */}
+      {statusModalId && (
+        <Modal
+          title="Change Reservation Status"
+          onClose={() => setStatusModalId(null)}
+          onSubmit={handleStatusSave}
+          isLoading={saving}
+        >
+          <Field label="Status">
+            <select
+              className={inputCls}
+              value={statusValue}
+              onChange={(e) => setStatusValue(e.target.value as ReservationStatus)}
+            >
+              <option value={ReservationStatus.PENDING}>Pending</option>
+              <option value={ReservationStatus.CONFIRMED}>Confirmed</option>
+              <option value={ReservationStatus.CANCELLED}>Cancelled</option>
             </select>
           </Field>
         </Modal>

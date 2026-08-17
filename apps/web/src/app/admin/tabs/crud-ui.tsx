@@ -53,6 +53,12 @@ export function Field({ label, children }: FieldProps) {
 export const inputCls = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 
 // ─── CrudTable ────────────────────────────────────────────────────────────────
+interface ExtraAction {
+  label: string;
+  onClick: (i: number) => void;
+  className?: string;
+}
+
 interface CrudTableProps {
   label: string;
   onAdd: () => void;
@@ -62,9 +68,10 @@ interface CrudTableProps {
   rows: ReactNode[][];
   onEdit?: (i: number) => void;
   onDelete?: (i: number) => void;
+  extraActions?: ExtraAction[];
 }
 
-export function CrudTable({ label, onAdd, isLoading, error, headers, rows, onEdit, onDelete }: CrudTableProps) {
+export function CrudTable({ label, onAdd, isLoading, error, headers, rows, onEdit, onDelete, extraActions }: CrudTableProps) {
   return (
     <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b">
@@ -96,7 +103,7 @@ export function CrudTable({ label, onAdd, isLoading, error, headers, rows, onEdi
                 {headers.map((h) => (
                   <th key={h} className="px-5 py-3 text-left font-medium">{h}</th>
                 ))}
-                {(onEdit || onDelete) && <th className="px-5 py-3 text-right">Actions</th>}
+                {(onEdit || onDelete || (extraActions && extraActions.length > 0)) && <th className="px-5 py-3 text-right">Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -105,11 +112,20 @@ export function CrudTable({ label, onAdd, isLoading, error, headers, rows, onEdi
                   {row.map((cell, j) => (
                     <td key={j} className="px-5 py-3 text-gray-700">{cell}</td>
                   ))}
-                  {(onEdit || onDelete) && (
+                  {(onEdit || onDelete || (extraActions && extraActions.length > 0)) && (
                     <td className="px-5 py-3 text-right space-x-2">
                       {onEdit && (
                         <button onClick={() => onEdit(i)} className="text-blue-600 hover:underline text-xs font-medium">Edit</button>
                       )}
+                      {extraActions && extraActions.map((action) => (
+                        <button
+                          key={action.label}
+                          onClick={() => action.onClick(i)}
+                          className={action.className ?? "text-purple-600 hover:underline text-xs font-medium"}
+                        >
+                          {action.label}
+                        </button>
+                      ))}
                       {onDelete && (
                         <button onClick={() => onDelete(i)} className="text-red-500 hover:underline text-xs font-medium">Delete</button>
                       )}

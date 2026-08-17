@@ -3,3 +3,7 @@ dist
 .turbo
 .env
 .env.local
+src/prisma/migrations/*
+src/prisma/generated/*
+src/generated/*
+

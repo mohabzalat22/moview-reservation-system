@@ -1,5 +1,5 @@
 import { request, Envelope } from "./core";
-import type { Reservation, CreateReservation } from "@/dto/reservation.dto";
+import type { Reservation, CreateReservation, UpdateReservationStatus } from "@/dto/reservation.dto";
 
 
 export async function getReservations(token: string) {
@@ -18,6 +18,14 @@ export async function createReservation(token: string, data: CreateReservation) 
 export async function updateReservation(token: string, id: string, data: Partial<CreateReservation>) {
   const env = await request<Envelope<Reservation>>(`/reservations/${id}`, token, {
     method: "PUT",
+    body: JSON.stringify(data),
+  });
+  return env.data;
+}
+
+export async function updateReservationStatus(token: string, id: string, data: UpdateReservationStatus) {
+  const env = await request<Envelope<Reservation>>(`/reservations/${id}/status`, token, {
+    method: "PATCH",
     body: JSON.stringify(data),
   });
   return env.data;

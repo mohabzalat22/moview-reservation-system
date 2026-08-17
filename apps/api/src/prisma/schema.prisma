@@ -121,9 +121,10 @@ model Seat {
 }
 
 model Reservation {
-  id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String            @id @default(uuid()) @db.Uuid
+  status    ReservationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 
   userId String @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
@@ -132,6 +133,12 @@ model Reservation {
   showTime   ShowTime @relation(fields: [showTimeId], references: [id])
 
   seats ReservationSeat[]
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
 }
 
 model ReservationSeat {

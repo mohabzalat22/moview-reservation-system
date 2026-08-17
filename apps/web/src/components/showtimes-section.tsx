@@ -15,7 +15,7 @@ function getLocalDateStr(date: Date = new Date()) {
 }
 
 export function ShowTimesSection() {
-  const [date, setDate] = useState<string>(getLocalDateStr());
+  const [date, setDate] = useState<string>("");
   const [showTimes, setShowTimes] = useState<ShowTime[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,8 @@ export function ShowTimesSection() {
     async function fetchShowTimes() {
       setLoading(true);
       try {
-        const params = new URLSearchParams({ date, upcomingOnly: "true" });
+        const params = new URLSearchParams({ upcomingOnly: "true" });
+        if (date) params.append("date", date);
         const res = await fetch(`${API_BASE}/showtimes?${params.toString()}`, {
           cache: "no-store",
         });
@@ -69,6 +70,18 @@ export function ShowTimesSection() {
           </label>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-4 pt-2 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <button
+            onClick={() => setDate("")}
+            className={`flex shrink-0 flex-col items-center justify-center min-w-[5rem] h-20 rounded-xl border transition-all duration-300 ${
+              date === ""
+                ? "bg-primary border-primary text-white shadow-lg shadow-primary/25 scale-105"
+                : "bg-card border-border/60 text-muted-foreground hover:border-primary/50 hover:text-foreground hover:bg-card/80"
+            }`}
+          >
+            <span className={`text-xs font-semibold uppercase tracking-wider ${date === "" ? 'text-white/90' : ''}`}>Any</span>
+            <span className={`text-2xl font-bold mt-0.5 ${date === "" ? "text-white" : "text-foreground"}`}>All</span>
+            <span className={`text-[10px] font-medium uppercase tracking-wider ${date === "" ? 'text-white/80' : ''}`}>Dates</span>
+          </button>
           {Array.from({ length: 14 }).map((_, i) => {
             const d = new Date();
             d.setDate(d.getDate() + i);

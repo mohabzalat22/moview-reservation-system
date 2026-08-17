@@ -40,7 +40,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-[#141414] py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight text-center">
@@ -72,7 +72,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-sm text-blue-600 hover:underline">
+                <Link href="#" className="text-sm text-red-500 hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -92,7 +92,7 @@ export default function LoginPage() {
             </Button>
             <div className="text-sm text-center text-gray-500">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-blue-600 hover:underline">
+              <Link href="/register" className="text-red-500 hover:underline">
                 Sign up
               </Link>
             </div>

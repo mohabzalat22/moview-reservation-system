@@ -52,7 +52,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-[#141414] py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight text-center">
@@ -122,7 +122,7 @@ export default function RegisterPage() {
             </Button>
             <div className="text-sm text-center text-gray-500">
               Already have an account?{" "}
-              <Link href="/login" className="text-blue-600 hover:underline">
+              <Link href="/login" className="text-red-500 hover:underline">
                 Sign in
               </Link>
             </div>

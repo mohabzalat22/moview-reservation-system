@@ -39,12 +39,12 @@ export function ShowTimesSection() {
   }, [date]); // re-fetches every time date changes
 
   return (
-    <div className="w-full max-w-6xl mx-auto text-left">
-      <h2 className="text-3xl font-bold mb-6">Now Showing</h2>
+    <div className="w-full max-w-7xl mx-auto text-left py-8">
+      <h2 className="text-3xl font-bold mb-6 text-white border-l-4 border-red-600 pl-3">Now Showing</h2>
 
       {/* Date Filter */}
       <div className="flex items-center gap-4 mb-8">
-        <Label htmlFor="date-filter" className="text-base font-semibold whitespace-nowrap">
+        <Label htmlFor="date-filter" className="text-base font-semibold whitespace-nowrap text-gray-300">
           Filter by Date
         </Label>
         <Input
@@ -52,17 +52,17 @@ export function ShowTimesSection() {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-48"
+          className="w-48 bg-[#222] border-[#444] text-white"
         />
       </div>
 
       {/* Results */}
       {loading ? (
-        <p className="text-gray-500 text-lg">Loading showtimes...</p>
+        <p className="text-gray-400 text-lg">Loading showtimes...</p>
       ) : showTimes.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {showTimes.map((st) => (
-            <Card key={st.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={st.id} className="overflow-hidden bg-[#181818] border-[#333] text-white hover:scale-105 transition-transform duration-300">
               {st.movie?.poster && (
                 <img
                   src={st.movie.poster}
@@ -71,22 +71,22 @@ export function ShowTimesSection() {
                 />
               )}
               <CardHeader>
-                <CardTitle>{st.movie?.title || "Unknown Movie"}</CardTitle>
-                <CardDescription className="line-clamp-2">
+                <CardTitle className="text-white font-bold">{st.movie?.title || "Unknown Movie"}</CardTitle>
+                <CardDescription className="line-clamp-2 text-gray-400">
                   {st.movie?.description || "No description available."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm font-medium text-gray-700">
-                    <strong>Hall:</strong> {st.hall?.name || "Unknown"}
+                  <p className="text-sm font-medium text-gray-400">
+                    <strong className="text-gray-200">Hall:</strong> {st.hall?.name || "Unknown"}
                   </p>
-                  <p className="text-sm font-medium text-gray-700">
-                    <strong>Start Time:</strong>{" "}
+                  <p className="text-sm font-medium text-gray-400">
+                    <strong className="text-gray-200">Start Time:</strong>{" "}
                     {new Date(st.showTimeStart).toLocaleString()}
                   </p>
-                  <p className="text-sm font-medium text-gray-700">
-                    <strong>Price:</strong> {st.basePrice} {st.baseCurrency || "EGP"}
+                  <p className="text-sm font-medium text-gray-400">
+                    <strong className="text-gray-200">Price:</strong> {st.basePrice} {st.baseCurrency || "EGP"}
                   </p>
                   <Link
                     href="/login"
@@ -102,7 +102,7 @@ export function ShowTimesSection() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-lg">No upcoming showtimes for the selected date.</p>
+        <p className="text-gray-400 text-lg">No upcoming showtimes for the selected date.</p>
       )}
     </div>
   );
